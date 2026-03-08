@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { authService } from './services/auth';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -24,7 +25,7 @@ export default function LoginPage() {
 
     try {
       await authService.login({ email, password });
-      router.push('/dashboard'); // Vamos criar essa página depois
+      router.push('/dashboard'); 
     } catch (error: any) {
       console.error('Erro no login:', error);
       const message = error?.response?.data?.message || 'Erro ao fazer login. Verifique suas credenciais.';
@@ -70,6 +71,9 @@ export default function LoginPage() {
         >
           {loading ? 'Entrando...' : 'Entrar'}
         </button>
+        <p className="mt-4 text-center text-sm text-gray-600">
+        Não é um treinador? <Link href="/register" className="text-red-500 hover:underline">Cadastre-se</Link>
+        </p>
       </form>
     </div>
   );
