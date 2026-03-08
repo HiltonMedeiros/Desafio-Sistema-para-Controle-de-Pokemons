@@ -134,7 +134,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-xs text-slate-600 mt-6">
-          © 2026 Pokédex Admin · Todos os direitos reservados
+          © 2026 Pokédex Admin  <br></br>Hilton Medeiros Amorim - Ciência da Computação <br></br>Centro Universitário de João Pessoa - UNIPÊ
         </p>
       </div>
     </div>
