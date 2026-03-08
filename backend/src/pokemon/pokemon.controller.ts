@@ -1,15 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PokemonService } from './pokemon.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 
 @Controller('pokemon')
+@UseGuards(JwtAuthGuard) // 🔒 Agora todas as rotas exigem Token!
 export class PokemonController {
   constructor(private readonly pokemonService: PokemonService) {}
 
   @Post()
-  create(@Body() createPokemonDto: CreatePokemonDto) {
-    return this.pokemonService.create(createPokemonDto);
+  create(@Body() createPokemonDto: CreatePokemonDto, @Request() req: any) {
+    // Vincula automaticamente o ID do treinador logado ao Pokémon
+    return this.pokemonService.create({
+      ...createPokemonDto,
+      ownerId: req.user.userId,
+    });
   }
 
   @Get()
@@ -23,12 +41,45 @@ export class PokemonController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePokemonDto: UpdatePokemonDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updatePokemonDto: UpdatePokemonDto,
+    @Request() req: any,
+  ) {
+    const pokemon = await this.pokemonService.findOne(+id);
+
+    // Verifica se o Pokémon existe
+    if (!pokemon) {
+      throw new NotFoundException(`Pokémon com ID ${id} não encontrado`);
+    }
+
+    // Regra de Propriedade: Somente o dono edita!
+    if (pokemon.ownerId !== req.user.userId) {
+      throw new ForbiddenException(
+        'Você só pode editar seus próprios Pokémons',
+      );
+    }
+
     return this.pokemonService.update(+id, updatePokemonDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string, @Request() req: any) {
+    const pokemon = await this.pokemonService.findOne(+id);
+
+    // Verifica se o Pokémon existe
+    if (!pokemon) {
+      throw new NotFoundException(`Pokémon com ID ${id} não encontrado`);
+    }
+
+    // Regra de Propriedade: Somente o dono deleta!
+    if (pokemon.ownerId !== req.user.userId) {
+      throw new ForbiddenException(
+        'Você só pode deletar seus próprios Pokémons',
+      );
+    }
+
     return this.pokemonService.remove(+id);
   }
 }
+
