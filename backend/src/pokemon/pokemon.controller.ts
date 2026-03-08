@@ -17,7 +17,7 @@ import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 
 @Controller('pokemon')
-@UseGuards(JwtAuthGuard) // 🔒 Agora todas as rotas exigem Token!
+@UseGuards(JwtAuthGuard) // todas as rotas exigem Token
 export class PokemonController {
   constructor(private readonly pokemonService: PokemonService) {}
 
@@ -48,12 +48,10 @@ export class PokemonController {
   ) {
     const pokemon = await this.pokemonService.findOne(+id);
 
-    // Verifica se o Pokémon existe
     if (!pokemon) {
       throw new NotFoundException(`Pokémon com ID ${id} não encontrado`);
     }
 
-    // Regra de Propriedade: Somente o dono edita!
     if (pokemon.ownerId !== req.user.userId) {
       throw new ForbiddenException(
         'Você só pode editar seus próprios Pokémons',
@@ -67,12 +65,10 @@ export class PokemonController {
   async remove(@Param('id') id: string, @Request() req: any) {
     const pokemon = await this.pokemonService.findOne(+id);
 
-    // Verifica se o Pokémon existe
     if (!pokemon) {
       throw new NotFoundException(`Pokémon com ID ${id} não encontrado`);
     }
 
-    // Regra de Propriedade: Somente o dono deleta!
     if (pokemon.ownerId !== req.user.userId) {
       throw new ForbiddenException(
         'Você só pode deletar seus próprios Pokémons',

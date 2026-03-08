@@ -9,12 +9,12 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'secretKey', // Use uma variável de ambiente!
+      secret: process.env.JWT_SECRET || 'secretKey',
       signOptions: { expiresIn: '1d' }, // Token vale por 1 dia
     }),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
-  exports: [AuthService], // Exportamos para usar em outros módulos
+  exports: [AuthService],
 })
 export class AuthModule {}
