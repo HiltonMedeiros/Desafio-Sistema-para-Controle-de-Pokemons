@@ -7,7 +7,7 @@ import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 export class PokemonService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createPokemonDto: CreatePokemonDto) {
+  async create(createPokemonDto: CreatePokemonDto & { ownerId: number }) {
     return this.prisma.pokemon.create({
       data: createPokemonDto,
     });
@@ -15,6 +15,13 @@ export class PokemonService {
 
   async findAll() {
     return this.prisma.pokemon.findMany();
+  }
+
+  async findByOwner(ownerId: number) {
+    return this.prisma.pokemon.findMany({
+      where: { ownerId },
+      orderBy: { pokedexNumber: 'asc' },
+    });
   }
 
   async findOne(id: number) {

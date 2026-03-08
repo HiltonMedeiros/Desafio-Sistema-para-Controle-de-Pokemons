@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -12,6 +12,12 @@ export class AuthService {
   ) {}
 
   async register(data: RegisterDto) {
+    if (!data?.email || !data?.password) {
+      throw new BadRequestException(
+        'Body invalido. Envie JSON com email e password.',
+      );
+    }
+
     const hashedPassword = await bcrypt.hash(data.password, 10);
     return this.prisma.user.create({
       data: {
@@ -22,6 +28,12 @@ export class AuthService {
   }
 
   async login(data: LoginDto) {
+    if (!data?.email || !data?.password) {
+      throw new BadRequestException(
+        'Body invalido. Envie JSON com email e password.',
+      );
+    }
+
     const user = await this.prisma.user.findUnique({ where: { email: data.email } });
     
     if (user && (await bcrypt.compare(data.password, user.password))) {

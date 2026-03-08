@@ -31,8 +31,9 @@ export class PokemonController {
   }
 
   @Get()
-  findAll() {
-    return this.pokemonService.findAll();
+  findAll(@Request() req: any) {
+    // Retorna apenas os pokémons do usuário logado
+    return this.pokemonService.findByOwner(req.user.userId);
   }
 
   @Get(':id')
