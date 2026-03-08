@@ -260,7 +260,7 @@ export default function Dashboard() {
                   <Github className="h-6 w-6 group-hover:scale-110 transition-transform" />
                 </a>
                 <a 
-                  href="www.linkedin.com/in/hilton-medeiros"
+                  href="https://www.linkedin.com/in/hilton-medeiros/"
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="p-3 rounded-2xl bg-slate-800 border border-slate-700 text-slate-400 hover:text-blue-400 hover:border-blue-500/50 hover:bg-slate-700/50 transition-all duration-300 shadow-lg group"

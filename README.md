@@ -26,7 +26,31 @@ Sistema Fullstack desenvolvido para gerenciamento administrativo de espécimes, 
 
 ## 🛠️ Como Executar o Projeto
 
-### 1. Clonar e Configurar
+### 1. Suba o Banco de Dados (Docker):
 ```bash
-git clone [https://github.com/seu-usuario/Desafio-Sistema-para-Controle-de-Pokemons.git](https://github.com/seu-usuario/Desafio-Sistema-para-Controle-de-Pokemons.git)
-cd Desafio-Sistema-para-Controle-de-Pokemons
+cd backend
+docker-compose up -d
+```
+### 2. Configure o Backend:
+```bash
+npm install
+npx prisma migrate dev
+npm run start:dev
+```
+### 3. Inicie o Frontend:
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
+## 🛡️ Diferenciais do Projeto
+
+* **Segurança por Proprietário**: O sistema foi projetado para que cada treinador gerencie exclusivamente seus próprios registros de Pokémon, garantindo a integridade e privacidade dos dados de cada usuário.
+* **Interface Premium**: Experiência de usuário (UX) refinada com feedback visual constante, incluindo modais de confirmação customizadas, loaders de carregamento (spinners) e um sistema de busca/filtro em tempo real.
+* **Documentação Técnica**: Código desenvolvido seguindo rigorosamente os princípios **SOLID** e **Clean Code**, demonstrando a maturidade técnica compatível com as exigências de um Bacharel em Ciência da Computação.
+
+---
+© 2026 Pokédex Administrativa · **Hilton Medeiros Amorim**
+
+
+
