@@ -16,10 +16,11 @@ async function bootstrap() {
   
   // Habilita CORS para o frontend
   app.enableCors({
-    origin: 'http://localhost:3001', // URL do seu frontend Next.js
+    origin: 'https://sistemadecontroledepokemons.vercel.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-  
-  await app.listen(process.env.PORT ?? 3000);
+
+  await app.listen(process.env.PORT || 3001);
 }
 bootstrap();
